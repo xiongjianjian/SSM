@@ -4,6 +4,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
@@ -11,21 +12,69 @@
        http://www.springframework.org/schema/mvc
        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
        http://code.alibabatech.com/schema/dubbo
-       http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+       http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+       http://www.springframework.org/schema/task
+       http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+
 
     <!-- 扫描web相关的bean -->
     <context:component-scan base-package="com.bn.controller"/>
+    <context:component-scan base-package="com.bn.time"/>
+
+    <!--全局异常处理-->
+    <bean id="CustormException" class="com.bn.exception.CustormException"></bean>
 
     <!-- 开启SpringMVC注解模式 -->
     <mvc:annotation-driven/>
 
+    <!--开启定时任务-->
+    <task:annotation-driven/>
+
+    <!--<bean id="timer" class="com.bn.time.Timer"/>
+    <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="group" value="timerAddGroup"/>
+        <property name="name" value="timerAddJob"/>
+        &lt;!&ndash;false表示等上一个任务执行完后再开启新的任务 &ndash;&gt;
+        <property name="concurrent" value="false"/>
+        <property name="targetObject">
+            <ref bean="timer"/>
+        </property>
+        <property name="targetMethod">
+            <value>add</value>
+        </property>
+    </bean>
+    &lt;!&ndash; 调度触发器 &ndash;&gt;
+    <bean id="myTriggerAdd" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="name" value="timerAddTrigger"/>
+        <property name="group" value="timerAddGroup"/>
+        <property name="jobDetail">
+            <ref bean="jobDetail"/>
+        </property>
+        <property name="cronExpression">
+            <value>0-5 * * * * ?</value>
+        </property>
+    </bean>
+    &lt;!&ndash; 调度工厂 &ndash;&gt;
+    <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="myTriggerAdd"/>
+            </list>
+        </property>
+    </bean>-->
+    <!-- <task:executor id="executor" pool-size="10"/>
+     <task:scheduler id="scheduler" pool-size="10"/>
+     <task:annotation-driven executor="executor" scheduler="scheduler"/>-->
+
     <!-- 静态资源默认servlet配置 -->
-    <mvc:default-servlet-handler/>
+    <!--<mvc:default-servlet-handler/>-->
+    <!--资源路径配置-->
+    <mvc:resources mapping="/static/**/" location="/static/"/>
 
     <!-- 配置jsp 显示ViewResolver -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
 

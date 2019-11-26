@@ -10,4 +10,5 @@ public interface StudentDao {
      * @return
      */
     public List<Student> findAll();
+    public int add(Student student);
 }

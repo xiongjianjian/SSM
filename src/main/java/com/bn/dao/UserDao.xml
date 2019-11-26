@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 设置为IUserDao接口方法提供sql语句配置 -->
+<mapper namespace="com.bn.dao.UserDao">
+
+    <select id="findAll" resultType="com.bn.entity.Student">
+        SELECT t.id,t.classno,c.classname as ClassesName,t.name as StuName,t.age,t.sex
+         FROM t_student t,t_classes c WHERE c.number=t.classno
+    </select>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        insert into t_student(id,classno,name,age,sex) values (#{id},#{classno},#{StuName},#{age},#{sex})
+    </insert>
+    <select id="selectUserByAccountAndPassword" resultType="com.bn.entity.UserCustomer"
+            parameterType="com.bn.entity.UserCustomer">
+        select id,account,password as passWord,username as userName,phone from t_user
+        <where>
+            <if test="account !=null and account != '' ">
+                account = #{account}
+            </if>
+
+            <if test="passWord !=null and passWord != '' ">
+                and password = #{passWord}
+            </if>
+        </where>
+
+    </select>
+
+    <select id="selectAuthByAccount" resultType="com.bn.entity.Role">
+        select tr.* from t_user tu,t_role tr,t_roleauth tra
+        where tu.id=tra.userId
+        and tr.id=tra.roleId
+        and tu.account=#{account}
+    </select>
+
+</mapper>

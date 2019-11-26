@@ -15,6 +15,8 @@
 
     <!-- 扫描service包下所有使用注解的类型 -->
     <context:component-scan base-package="com.bn.service"/>
+    <context:component-scan base-package="com.bn.security"/>
+
 
     <!-- 配置数据库相关参数properties的属性：${url} -->
     <context:property-placeholder location="classpath:jdbc.properties"/>
@@ -36,10 +38,8 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <!-- 注入数据库连接池 -->
         <property name="dataSource" ref="dataSource"/>
-        <!-- 扫描model包 使用别名 -->
-        <property name="typeAliasesPackage" value="com.bn.model"/>
-        <!-- 扫描sql配置文件:mapper需要的xml文件 -->
-        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+        <!-- 加载mybatis的全局配置文件 -->
+        <property name="configLocation" value="classpath:sqlMapConfig.xml" />
     </bean>
 
     <!-- 配置扫描Dao接口包，动态实现Dao接口，注入到spring容器中 -->
@@ -59,14 +59,14 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <!--定义提供方应用信息，用于计算机依赖关系。在dubbo-admin或dubbo-monitor会显示这个名字方便识别-->
-    <dubbo:application name="SSM_Provider" owner="admin" organization="dubbox"/>
-    <!--使用zookeeper注册中心暴露服务，注意要先开启zookeeper-->
+   <!-- <dubbo:application name="SSM_Provider" owner="admin" organization="dubbox"/>
+    &lt;!&ndash;使用zookeeper注册中心暴露服务，注意要先开启zookeeper&ndash;&gt;
     <dubbo:registry address="zookeeper://10.10.10.108:2181"/>
-    <!--用dubbo协议在20880端口暴露服务-->
+    &lt;!&ndash;用dubbo协议在20880端口暴露服务&ndash;&gt;
     <dubbo:protocol name="dubbo" port="20880"/>
-    <!--用dubbo协议实现定义好的api接口-->
+    &lt;!&ndash;用dubbo协议实现定义好的api接口&ndash;&gt;
     <dubbo:service interface="com.bn.service.StudentService" ref="studentService" protocol="dubbo"/>
-    <!--具体实现的bean-->
-    <bean id="studentService" class="com.bn.service.impl.StudentServiceImpl" />
+    &lt;!&ndash;具体实现的bean&ndash;&gt;
+    <bean id="studentService" class="com.bn.service.impl.StudentServiceImpl" />-->
 
 </beans>
