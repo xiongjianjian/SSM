@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 设置为IUserDao接口方法提供sql语句配置 -->
+<mapper namespace="com.bn.dao.StudentDao">
+
+    <select id="findAll" resultType="com.bn.entity.Student">
+        SELECT t.id,t.classno,c.classname as ClassesName,t.name as StuName,t.age,t.sex
+         FROM t_student t,t_classes c WHERE c.number=t.classno
+    </select>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        insert into t_student(id,classno,name,age,sex) values (#{id},#{classno},#{StuName},#{age},#{sex})
+    </insert>
+
+</mapper>
